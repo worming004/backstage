@@ -1,0 +1,31 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: write-file-template
+  title: Write File
+  description: Write file locally
+spec:
+  owner: worming004
+  type: service
+
+  parameters:
+    - title: Only Steps
+      required:
+        - filename
+        - contents
+      properties:
+        filename:
+          title: Filename
+          type: string
+          description: FilePath
+        contents:
+          title: Content
+          type: string
+          description: Filecontent
+  steps:
+    - id: file-create
+      name: create a file
+      action: file:create
+      input:
+        contents: ${{parameters.contents}}
+        filename: ${{parameters.filename}}

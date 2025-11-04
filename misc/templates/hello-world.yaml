@@ -5,7 +5,7 @@ metadata:
   title: Hello World
   description: Says Hello to a specified name.
 spec:
-  owner: terroir-ops
+  owner: worming004
   type: service
 
   parameters:
@@ -15,7 +15,6 @@ spec:
       properties:
         name:
           type: string
-
   steps:
     - id: log-message
       name: Log Message

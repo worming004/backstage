@@ -8,6 +8,8 @@
 
 import { createBackend } from '@backstage/backend-defaults';
 
+import { createNewFileAction } from './steps/writeLocalFile';
+
 const backend = createBackend();
 
 backend.add(import('@backstage/plugin-app-backend'));
@@ -65,5 +67,29 @@ backend.add(import('@backstage/plugin-signals-backend'));
 
 // 
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+
+
+import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node';
+import { createBackendModule } from '@backstage/backend-plugin-api';
+
+const scaffolderWriteFileExtension = createBackendModule({
+  pluginId: 'scaffolder',
+  moduleId: 'custom-extensions',
+  register(env) {
+    env.registerInit({
+      deps: {
+        scaffolder: scaffolderActionsExtensionPoint,
+        // ... and other dependencies as needed
+      },
+      async init({ scaffolder /* ..., other dependencies */ }) {
+        // Here you have the opportunity to interact with the extension
+        // point before the plugin itself gets instantiated
+        scaffolder.addActions(createNewFileAction()); // just an example
+      },
+    });
+  },
+})
+
+backend.add(scaffolderWriteFileExtension);
 
 backend.start();
